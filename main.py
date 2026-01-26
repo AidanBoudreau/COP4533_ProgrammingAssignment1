@@ -58,5 +58,6 @@ while (len(hospitalsUnmatched) != 0):
         else:
             a += 1
 
-for i in range(firstLine):
-    print(i+1, students[i].currentMatch.ID)
+with open("matcherOutput.txt", "w") as f:
+    for i in range(firstLine):
+        f.write(str(i+1) + " " + str(students[i].currentMatch.ID) + "\n")
