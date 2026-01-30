@@ -47,6 +47,22 @@ for i in range(firstLine):
     students.append(Student(currentLineAsList))
 
 # Gale-Shapley Algorithm
+nextPref = {h.ID: 0 for h in hospitalsUnmatched}
+
+while len(hospitalsUnmatched) != 0:
+    currentHospital = hospitalsUnmatched[0]
+    a = currentHospital.preferences[nextPref[currentHospital.ID]] - 1
+    nextPref[currentHospital.ID] += 1
+
+    if not students[a].matched:
+        students[a].matchTo(currentHospital)
+        hospitalsUnmatched.pop(0)
+
+    elif students[a].preferences.index(currentHospital.ID) < students[a].preferences.index(students[a].currentMatch.ID):
+        hospitalsUnmatched.append(students[a].currentMatch)
+        students[a].matchTo(currentHospital)
+        hospitalsUnmatched.pop(0)
+"""
 while (len(hospitalsUnmatched) != 0):
     currentHospital = hospitalsUnmatched[0]
     a = currentHospital.preferences[0] - 1
@@ -62,6 +78,7 @@ while (len(hospitalsUnmatched) != 0):
             break
         else:
             a += 1
+"""
 
 with open("matcherOutput.txt", "w") as f:
     for i in range(firstLine):
