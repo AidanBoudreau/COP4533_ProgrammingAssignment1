@@ -2,10 +2,12 @@ import sys
 import os
 from StudentHospital import Hospital, Student
 
+# Check if input file exists
 if os.path.getsize("input.txt") == 0:
     print("Input file is empty.")
     sys.exit()
 
+# Read number of hospitals/students (first line)
 file = open("input.txt")
 firstLine = file.readline()
 try:
@@ -14,6 +16,7 @@ except:
     print("Incorrect formatting for first line.")
     sys.exit()
 
+# Read Hospital preferences
 hospitalsUnmatched = []
 for i in range(firstLine):
     currentLine = file.readline()
@@ -28,6 +31,7 @@ for i in range(firstLine):
         currentLineAsList[j] = int(currentLineAsList[j])
     hospitalsUnmatched.append(Hospital(currentLineAsList, i+1))
 
+# Read student preferences
 students = []
 for i in range(firstLine):
     currentLine = file.readline()
@@ -42,6 +46,7 @@ for i in range(firstLine):
         currentLineAsList[j] = int(currentLineAsList[j])
     students.append(Student(currentLineAsList))
 
+# Gale-Shapley Algorithm
 while (len(hospitalsUnmatched) != 0):
     currentHospital = hospitalsUnmatched[0]
     a = currentHospital.preferences[0] - 1
