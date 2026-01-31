@@ -1,12 +1,13 @@
 Aidan Boudreau (UFID:22043059)
 
 ## PLEASE NOTE
-As per notice by a TA, my original group had been disolved. I am unsure if this was done by request of my group partner, or what may have caused it, but I had already begun working on the assignment and using a lot of his starting work to work on the part we agreed I would complete. Since the dissolvement I have redone all of his work, but his name is mentioned as a collaborator because I had originally bagan working prior to the group had been dissolved. 
+As per notice by a TA, my original group had been disolved. I am unsure if this was done by request of my group partner, or what may have caused it, but I had already begun working on the assignment and using a lot of his starting work to work on the part we agreed I would complete. Since the dissolvement I have redone all of his work, but his name is mentioned as a collaborator because I had originally began working prior to the group had been dissolved. 
 
 ## Instructions (Gale-Shapley Algorithm)
 1. change input to a scenario in need of matching
-2. run matching.py
+2. run matching.py (python matching.py)
 3. read output in output.txt
+4. run verifier.py (python verifier.py)
 
 
 ## Input Format:
@@ -42,6 +43,9 @@ This means:
 - Hospital 2 is matched with Student 1  
 - Hospital 3 is matched with Student 3  
 
+## Running Verifier
+1. run verifier.py (python verifier.py)
+- This will print whether there is an issue with 
 
 ## Scalability Analysis
 
