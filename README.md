@@ -34,13 +34,13 @@ Each row represents a match between a hospital and a student
 
 ## Example Output:
 1 2  
-2 3  
-3 1  
+2 1  
+3 3  
 
-This indicates:
+This means:
 - Hospital 1 is matched with Student 2  
-- Hospital 2 is matched with Student 3  
-- Hospital 3 is matched with Student 1  
+- Hospital 2 is matched with Student 1  
+- Hospital 3 is matched with Student 3  
 
 
 ## Scalability Analysis
