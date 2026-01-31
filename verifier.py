@@ -1,12 +1,25 @@
-import sys
+from StudentHospital import Hospital, Student
+
+def end_program(message):
+    print(message)
+    exit()
 
 # Read number of hospitals/students (first line)
-file = open("input.txt")
+try: 
+    file = open("input.txt")
+except FileNotFoundError:
+    message = "INVALID. Input file not found."
+    end_program(message)
+
 n = file.readline()
 if n == "":
-    print("INVALID. Input file is empty.")
-    sys.exit()
-n = int(n)
+    message = "INVALID. Input file is empty."
+    end_program(message)
+try:
+    n = int(n)
+except:
+    message = "INVALID. Incorrect formatting for first line."
+    end_program(message)
 
 
 # Read preferences into dictionaries
@@ -24,10 +37,18 @@ for i in range(n):
     for j in range(n):
         currentLineAsList[j] = int(currentLineAsList[j])
     student_preferences[i + 1] = currentLineAsList
+file.close()
+
+hospitals = {}
+for i in range(n):
+    hospitals[i + 1] = Hospital(hospital_preferences[i + 1], i + 1)
+students = {}
+for i in range(n):
+    students[i + 1] = Student(student_preferences[i + 1], i + 1)
 
 
 # Read matches from output file
-file = open("matcherOutput.txt")
+file = open("output.txt")
 matches = []
 for line in file:
     currentLineAsList = line.split()
@@ -41,44 +62,40 @@ valid = True
 # check correct number of matches
 if len(matches) != n:
     valid = False
-    print("INVALID. Number of matches does not equal number of hospitals/students.")
-    sys.exit()
+    message = "INVALID. Number of matches does not equal number of hospitals/students."
+    end_program(message)
 
 # load matches into maps and count frequencies
-matchH = {}
-matchS = {}
 hospital_frequency = {}
 student_frequency = {}
-for match in matches:
-    hospitalID = match[0]
-    studentID = match[1]
-    matchH[hospitalID] = studentID
-    matchS[studentID] = hospitalID
+for hospitalID, studentID in matches:
+    hospitals[hospitalID].matchTo(students[studentID])
+    students[studentID].matchTo(hospitals[hospitalID])
     hospital_frequency[hospitalID] = hospital_frequency.get(hospitalID, 0) + 1
     student_frequency[studentID] = student_frequency.get(studentID, 0) + 1
 
     # check for out of range IDs (below 1 or above n)
     if hospitalID < 1 or hospitalID > n:
-        print(f"INVALID. Hospital ID {hospitalID} is out of range.")
+        message = f"INVALID. Hospital ID {hospitalID} is out of range."
         valid = False
-        sys.exit()
+        end_program(message)
     if studentID < 1 or studentID > n:
-        print(f"INVALID. Student ID {studentID} is out of range.")
+        message = f"INVALID. Student ID {studentID} is out of range."
         valid = False
-        sys.exit()
+        end_program(message)
 
 
 # check for duplicates and unmatched
 for i in range(1, n + 1):
     if hospital_frequency.get(i, 0) != 1:
-        print(f"INVALID. Hospital {i} is matched {hospital_frequency.get(i, 0)} times.")
+        message = f"INVALID. Hospital {i} is matched {hospital_frequency.get(i, 0)} times."
         valid = False
     elif student_frequency.get(i, 0) != 1:
-        print(f"INVALID. Student {i} is matched {student_frequency.get(i, 0)} times.")
+        message = f"INVALID. Student {i} is matched {student_frequency.get(i, 0)} times."
         valid = False
 
 if valid == False:
-    sys.exit()
+    end_program(message)
 
     
 # stability check (check if hospitals and students prefer each other over their current matches)
@@ -86,13 +103,13 @@ stable = True
 blocking_pair = None
 
 for hospital in range(1, n + 1):
-    curr_student = matchH[hospital]
+    curr_student = hospitals[hospital].get_match().ID
     curr_hospital_preference_list = hospital_preferences[hospital]
 
     preference_position = curr_hospital_preference_list.index(curr_student)
     #look at the preferable students' hospital preferences
     for more_preferable_student in curr_hospital_preference_list[:preference_position]:
-        more_preferable_students_hospital = matchS[more_preferable_student]
+        more_preferable_students_hospital = students[more_preferable_student].get_match().ID
         more_prefereble_students_preferences = student_preferences[more_preferable_student]
 
         # check if the more preferable student prefers this hospital over their current match
